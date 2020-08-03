@@ -1,6 +1,6 @@
 {
     "manifest_version": 2,
-    "name": "Sarathi Slot Booking",
+    "name": "Sarathi Slot Booking Version 2",
     "description":"An Automatic Slot bokking extension...",
     "version": "1.2",
     "content_scripts": [
