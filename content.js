@@ -1,4 +1,7 @@
+ 
 console.log("Sarathi Slot Booking go...");
+
+
 
 //find appointment date slot
 var allDates = document.getElementsByTagName("td");
@@ -11,42 +14,66 @@ if(allDates){
         }
     }
 }
-if(firstDate!=-1){
+
+var t = document.getElementsByName("timeForDisp");
+if(firstDate!=-1 && t.length==0){
     var a = allDates[firstDate].getElementsByTagName("a");
     if(a){
-        console.log(a[0].href);
-        window.location = a[0].href;
+        console.log(a[0].href);  
+        window.location.assign(a[0].href);
+        
     }
 }
 
-//first appointment time slot
-var firstTime = -1;
-//finding first appointment date
-var allInputRadio = document.getElementsByTagName('input');
-if(allInputRadio){
-   for (i = 0; i < allInputRadio.length; i++) {
-        if (allInputRadio[i].type == 'radio') {
-            firstTime = i;
-            break;
-        }
-    }
+if(t.length>0){     
+var loc = window.location.href;
+var len = loc.length-1;
+while(len>=0){
+    if(loc[len]=="/")
+      break;
+    len--;  
+    //console.log(loc[len]);
+}
+var url = "";
+for(var i=0;i<len;i++){
+    url+=loc[i];
 }
 
-if(firstTime!=-1){
-    //for auto select appointment date
-    allInputRadio[firstTime].click();
-    //for auto book slot
-    var bookSlot = document.getElementById('slotbtn');
-    if(bookSlot){
-       bookSlot.click();
-    }
+var slotDate="";
+var slotTime="";
+var slotSeat="";
+var date = document.getElementById("seldt");
+slotDate = date.innerText;
+var time = document.getElementsByName("timeForDisp");
+var id = time[0].id;
+for(i=0;i<11;i++){
+ slotTime+=id[i];
 }
+slotSeat = time[0].value;
 
-//for auto final submit
-var finalForm = document.getElementById('llslotprev');
-if(finalForm){
-   finalForm.submit();
-}
+// console.log(slotDate);
+// console.log(slotTime);
+// console.log(slotSeat);
+var xhr = new XMLHttpRequest();
+xhr.open('POST',url+"/bookllnew.do?timefordisp="+slotTime+"&seldate="+slotDate,true);
+xhr.setRequestHeader( 'Access-Control-Allow-Origin', '*');
 
- //https://sarathi.parivahan.gov.in/slotscov12/fetchslotdet.do?date=19-08-2020
-///slotscov12/savellslotdet.do
+var formData = new FormData();
+formData.append('timeForDisp',slotSeat);
+formData.append('save','BOOKSLOT');
+xhr.send(formData);
+xhr.onreadystatechange = processRequest;
+
+function processRequest(e){
+    window.location.assign(url+"/savellslotdet.do");
+ }
+ 
+
+} 
+    
+  
+
+
+
+
+
