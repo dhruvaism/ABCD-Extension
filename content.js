@@ -1,9 +1,49 @@
  
-console.log("Sarathi Slot Booking go...");
+ 
+
+ //getting base url
+ var loc = window.location.href;
+ if(loc.includes("sarathi.parivahan.gov.in")){
+    console.log("abc...");
+    var len = loc.length-1;
+ while(len>=0){
+     if(loc[len]=="/")
+       break;
+     len--;  
+     //console.log(loc[len]);
+ }
+ var url = "";
+ for(var i=0;i<len;i++){
+     url+=loc[i];
+ }
 
 
+function bookslot(){
 
-//find appointment date slot
+var form = document.createElement("form");
+form.setAttribute("method","post");
+form.setAttribute("action",url+"/proceedBookslot.do");
+
+var input = document.createElement("input");
+input.setAttribute("type","text");
+input.setAttribute("name","method:proceedBookslot");
+input.setAttribute("value","PROCEED TO BOOK");
+form.appendChild(input);
+document.body.appendChild(form);
+form.submit();
+console.log(form);
+} 
+
+var sub = undefined;
+var form = undefined;
+sub = document.getElementById("securityForm__submitSecurityCode");
+if(sub!=undefined){
+bookslot();
+
+}
+
+
+// //find appointment date slot
 var allDates = document.getElementsByTagName("td");
 var firstDate = -1;
 if(allDates){
@@ -15,33 +55,30 @@ if(allDates){
     }
 }
 
+var last = window.location.href;
+if(last.includes("proceedBookslot.do")){
+    if(firstDate==-1){
+        bookslot();
+    }
+}
+
+
 var t = document.getElementsByName("timeForDisp");
+
 if(firstDate!=-1 && t.length==0){
     var a = allDates[firstDate].getElementsByTagName("a");
     if(a){
         console.log(a[0].href);  
-        window.location.assign(a[0].href);
+        window.location.assign(a[0].href); //fetch slot
         
     }
 }
 
-if(t.length>0){     
-var loc = window.location.href;
-var len = loc.length-1;
-while(len>=0){
-    if(loc[len]=="/")
-      break;
-    len--;  
-    //console.log(loc[len]);
-}
-var url = "";
-for(var i=0;i<len;i++){
-    url+=loc[i];
-}
+ if(t.length>0 && firstDate!=-1){     
 
 var slotDate="";
 var slotTime="";
-var slotSeat="";
+var slotSeat="37";
 var date = document.getElementById("seldt");
 slotDate = date.innerText;
 var time = document.getElementsByName("timeForDisp");
@@ -49,11 +86,8 @@ var id = time[0].id;
 for(i=0;i<11;i++){
  slotTime+=id[i];
 }
-slotSeat = time[0].value;
 
-// console.log(slotDate);
-// console.log(slotTime);
-// console.log(slotSeat);
+slotSeat = time[0].value;
 var xhr = new XMLHttpRequest();
 xhr.open('POST',url+"/bookllnew.do?timefordisp="+slotTime+"&seldate="+slotDate,true);
 xhr.setRequestHeader( 'Access-Control-Allow-Origin', '*');
@@ -70,10 +104,7 @@ function processRequest(e){
  
 
 } 
+
+ }
     
-  
-
-
-
-
-
+ 
