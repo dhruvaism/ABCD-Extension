@@ -63,6 +63,8 @@ if(last.includes("proceedBookslot.do")){
 }
 
 
+
+
 var t = document.getElementsByName("timeForDisp");
 
 if(firstDate!=-1 && t.length==0){
@@ -100,11 +102,19 @@ xhr.onreadystatechange = processRequest;
 
 function processRequest(e){
     window.location.assign(url+"/savellslotdet.do");
+       
  }
  
+}
 
-} 
+if(last.includes("savellslotdet.do")){
+    var d = undefined;  
+    d = document.getElementById("backForm");
+    if(d!=undefined){
+        window.location.assign(last);
+    }
+  }
 
  }
     
- 
+  
